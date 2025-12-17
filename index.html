@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SF Battle Zone - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0b1c2d;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      text-align: center;
+      background: #112b46;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #00b4ff;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #00b4ff;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #0094d8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h1>SF Battle Zone</h1>
+  <p>Login with Google to continue</p>
+  <button onclick="googleLogin()">Continue with Google</button>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithRedirect, onAuthStateChanged } 
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCEtGjSPP1a6qDX2QePUZ3-j1U17YR7iVQ",
+    authDomain: "sf-tournament-e0e83.firebaseapp.com",
+    projectId: "sf-tournament-e0e83",
+    storageBucket: "sf-tournament-e0e83.firebasestorage.app",
+    messagingSenderId: "901338002864",
+    appId: "1:901338002864:web:242a87ba0f7c349d4f9275",
+    measurementId: "G-M8R8J6JXTY"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  window.googleLogin = function () {
+    signInWithRedirect(auth, provider);
+  };
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      localStorage.setItem("userName", user.displayName);
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userPhoto", user.photoURL);
+
+      // Login success → Home page
+      window.location.href = "home.html";
+    }
+  });
+</script>
+
+</body>
+  </html>
